@@ -1,0 +1,6 @@
+add_subdirectory(interface)
+add_subdirectory(gyro)
+add_subdirectory(VL53L0X)
+add_subdirectory(servo)
+add_subdirectory(motor)
+add_subdirectory(camera)
