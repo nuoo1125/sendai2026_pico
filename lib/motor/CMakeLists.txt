@@ -1,4 +1,3 @@
-add_library(motor motor.cpp)
+add_library(motor motor.c)
 
-target_link_libraries(motor pico_stdlib hardware_pwm hardware_i2c)
-target_include_directories(motor PRIVATE ../gyro ../camera)
+target_link_libraries(motor pico_stdlib hardware_uart)

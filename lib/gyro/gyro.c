@@ -61,6 +61,7 @@ float read_angle() {
     i2c_read_blocking(gyro_i2c, BNO055_ADDR, buf, 2, false);
 
     int16_t raw = merge(buf[0], buf[1]);
+    printf("Raw angle data: %f\n", raw);
     return (float)raw / 16.0f;
 }
 float read_pitch() {
@@ -68,6 +69,7 @@ float read_pitch() {
     i2c_write_blocking(gyro_i2c, BNO055_ADDR, (uint8_t[]){EULER_P_LSB}, 1, true);
     i2c_read_blocking(gyro_i2c, BNO055_ADDR, buf, 2, false);
     int16_t raw = (int16_t)((buf[1] << 8) | buf[0]);  // LSBがbuf[0], MSBがbuf[1]
+    printf("Raw pitch data: %f\n", raw);
     return (float)raw / 16.0f;  // -180 ~ +180° の範囲
 }
 

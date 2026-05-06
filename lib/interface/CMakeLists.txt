@@ -1,2 +1,2 @@
 add_library(interface interface.c)
-target_link_libraries(interface pico_stdlib)
+target_link_libraries(interface pico_stdlib hardware_i2c)
