@@ -135,3 +135,41 @@ void motor_unlock(uint8_t id) {
     txData[7] = ~checksum;
     uart_write_blocking(UART_ID, txData, 8);
 }
+float get_motor_angle(uint8_t id) {
+    uint8_t txData[8];
+    txData[0] = 0xFF;
+    txData[1] = 0xFF;
+    txData[2] = id;
+    txData[3] = 4;    
+    txData[4] = 0x02; // 読みこむよ！
+    txData[5] = 56;   // 現在の角度
+    txData[6] = 2;    // 
+    uint8_t checksum = 0;
+    for (int i = 2; i < 7; i++) {
+        checksum += txData[i];
+    }
+    txData[7] = ~checksum;
+    while (uart_is_readable(UART_ID)) uart_getc(UART_ID);
+    uart_write_blocking(UART_ID, txData, 8);
+    for (int i = 0; i < 8; i++) {
+        if (uart_is_readable_within_us(UART_ID, 1000)) uart_getc(UART_ID);
+    }
+
+    uint8_t rx_buf[8];
+    for (int i = 0; i < 8; i++) {
+        if (uart_is_readable_within_us(UART_ID, 10000)) { // 10ms待機
+            rx_buf[i] = uart_getc(UART_ID);
+        } else {
+            return -1.0f; 
+        }
+    }
+
+    if (rx_buf[0] == 0xFF && rx_buf[1] == 0xFF && rx_buf[4] == 0) {
+        uint16_t raw_pos = rx_buf[5] | (rx_buf[6] << 8);
+        
+        float degree = (float)raw_pos * 360.0f / 4095.0f;
+        return degree;
+    }
+
+    return -1.0f; 
+}

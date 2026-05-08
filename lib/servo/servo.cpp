@@ -10,8 +10,11 @@ SERVO::SERVO(int in1) {
     pwm_set_clkdiv(slice1,100.0f);
     pwm_set_enabled(slice1, true);
 }
-
+float SERVO::value(){
+    return current_angle;
+}
 void SERVO::run(float angle){
+    current_angle = angle;
     float duty_cycle = 0.5f + (angle * 1.9f / 180.0f); 
     uint16_t level = (uint16_t)(duty_cycle * 25000.0f/ 20.0f);
     uint slice1 = pwm_gpio_to_slice_num(pin_in1); 

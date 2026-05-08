@@ -12,7 +12,7 @@ void motor_run(int id,int speed);
 void motor_angle(int16_t id,uint8_t angle10);
 void motor_lock(uint8_t id);
 void motor_unlock(uint8_t id);
-
+float get_motor_angle(uint8_t id);
 #ifdef __cplusplus
 }
 #endif
